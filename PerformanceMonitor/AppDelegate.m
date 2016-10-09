@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "PerformanceMonitor.h"
+#import "PerformanceMonitorManager.h"
 
 @interface AppDelegate ()
 
@@ -17,7 +17,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    [[PerformanceMonitor sharedInstance] start];
+    PerformanceMonitorConfiguration *config = PerformanceMonitorConfiguration.new;
+    config.millisecondToNotify = 50;
+    config.countToNotify = 5;
+    [[PerformanceMonitorManager sharedInstance] addObserve:[[PerformanceMonitor alloc] initWithConfiguration:config]];
     
     return YES;
 }

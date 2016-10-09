@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		49CB4D671DAA40D70037FCFC /* PerformanceMonitor.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CB4D661DAA40D70037FCFC /* PerformanceMonitor.m */; };
+		49CB4D6A1DAA62210037FCFC /* PerformanceMonitorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CB4D691DAA62210037FCFC /* PerformanceMonitorManager.m */; };
+		49CB4D6D1DAA63770037FCFC /* PerformanceMonitorConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CB4D6C1DAA63770037FCFC /* PerformanceMonitorConfiguration.m */; };
+		49CB4D701DAA643B0037FCFC /* PerformanceMonitorRunLoop.m in Sources */ = {isa = PBXBuildFile; fileRef = 49CB4D6F1DAA643B0037FCFC /* PerformanceMonitorRunLoop.m */; };
 		B8B10FA21BF5E02300447088 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B10FA11BF5E02300447088 /* main.m */; };
 		B8B10FA51BF5E02300447088 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B10FA41BF5E02300447088 /* AppDelegate.m */; };
 		B8B10FA81BF5E02300447088 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B8B10FA71BF5E02300447088 /* ViewController.m */; };
@@ -20,6 +23,12 @@
 /* Begin PBXFileReference section */
 		49CB4D651DAA40D70037FCFC /* PerformanceMonitor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerformanceMonitor.h; sourceTree = "<group>"; };
 		49CB4D661DAA40D70037FCFC /* PerformanceMonitor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceMonitor.m; sourceTree = "<group>"; };
+		49CB4D681DAA62210037FCFC /* PerformanceMonitorManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerformanceMonitorManager.h; sourceTree = "<group>"; };
+		49CB4D691DAA62210037FCFC /* PerformanceMonitorManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceMonitorManager.m; sourceTree = "<group>"; };
+		49CB4D6B1DAA63770037FCFC /* PerformanceMonitorConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerformanceMonitorConfiguration.h; sourceTree = "<group>"; };
+		49CB4D6C1DAA63770037FCFC /* PerformanceMonitorConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceMonitorConfiguration.m; sourceTree = "<group>"; };
+		49CB4D6E1DAA643B0037FCFC /* PerformanceMonitorRunLoop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerformanceMonitorRunLoop.h; sourceTree = "<group>"; };
+		49CB4D6F1DAA643B0037FCFC /* PerformanceMonitorRunLoop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceMonitorRunLoop.m; sourceTree = "<group>"; };
 		B8B10F9D1BF5E02300447088 /* PerformanceMonitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PerformanceMonitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8B10FA11BF5E02300447088 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B8B10FA31BF5E02300447088 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -48,8 +57,14 @@
 		49CB4D641DAA40D70037FCFC /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				49CB4D681DAA62210037FCFC /* PerformanceMonitorManager.h */,
+				49CB4D691DAA62210037FCFC /* PerformanceMonitorManager.m */,
+				49CB4D6B1DAA63770037FCFC /* PerformanceMonitorConfiguration.h */,
+				49CB4D6C1DAA63770037FCFC /* PerformanceMonitorConfiguration.m */,
 				49CB4D651DAA40D70037FCFC /* PerformanceMonitor.h */,
 				49CB4D661DAA40D70037FCFC /* PerformanceMonitor.m */,
+				49CB4D6E1DAA643B0037FCFC /* PerformanceMonitorRunLoop.h */,
+				49CB4D6F1DAA643B0037FCFC /* PerformanceMonitorRunLoop.m */,
 			);
 			path = Classes;
 			sourceTree = SOURCE_ROOT;
@@ -123,7 +138,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0710;
-				ORGANIZATIONNAME = Tencent;
+				ORGANIZATIONNAME = Andrew;
 				TargetAttributes = {
 					B8B10F9C1BF5E02300447088 = {
 						CreatedOnToolsVersion = 7.1;
@@ -167,9 +182,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				49CB4D701DAA643B0037FCFC /* PerformanceMonitorRunLoop.m in Sources */,
 				B8B10FA81BF5E02300447088 /* ViewController.m in Sources */,
 				49CB4D671DAA40D70037FCFC /* PerformanceMonitor.m in Sources */,
+				49CB4D6A1DAA62210037FCFC /* PerformanceMonitorManager.m in Sources */,
 				B8B10FA51BF5E02300447088 /* AppDelegate.m in Sources */,
+				49CB4D6D1DAA63770037FCFC /* PerformanceMonitorConfiguration.m in Sources */,
 				B8B10FA21BF5E02300447088 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

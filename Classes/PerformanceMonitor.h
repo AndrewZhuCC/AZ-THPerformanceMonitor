@@ -3,15 +3,14 @@
 //  SuperApp
 //
 //  Created by tanhao on 15/11/12.
-//  Copyright © 2015年 Tencent. All rights reserved.
+//  Copyright © 2015年 Andrew. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "PerformanceMonitorConfiguration.h"
 
 @interface PerformanceMonitor : NSObject
 
-+ (instancetype)sharedInstance;
-
+- (instancetype)initWithConfiguration:(PerformanceMonitorConfiguration *)configuration;
 - (void)start;
 - (void)stop;
 
