@@ -33,14 +33,20 @@
     return self;
 }
 
-- (void)addObserver:(PerformanceMonitor *)monitor {
-    [self.observers addObject:monitor];
-    [monitor start];
+- (PerformanceMonitor *)addObserver:(PerformanceMonitor *)monitor {
+    if (monitor) {
+        [self.observers addObject:monitor];
+        [monitor start];
+    }
+    return monitor;
 }
 
-- (void)removeObserver:(PerformanceMonitor *)monitor {
-    [monitor stop];
-    [self.observers removeObject:monitor];
+- (PerformanceMonitor *)removeObserver:(PerformanceMonitor *)monitor {
+    if (monitor) {
+        [monitor stop];
+        [self.observers removeObject:monitor];
+    }
+    return monitor;
 }
 
 - (void)removeAllObservers {

@@ -14,4 +14,7 @@
 - (void)start;
 - (void)stop;
 
+- (void)asyncWriteCrashLogToFileWithName:(NSString *)name;
+- (void)syncWriteCrashLogToFileWithName:(NSString *)name;
+
 @end

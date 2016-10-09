@@ -12,9 +12,9 @@
 
 + (instancetype)sharedInstance;
 
-- (void)addObserver:(PerformanceMonitor *)monitor;
+- (PerformanceMonitor *)addObserver:(PerformanceMonitor *)monitor;
 
-- (void)removeObserver:(PerformanceMonitor *)monitor;
+- (PerformanceMonitor *)removeObserver:(PerformanceMonitor *)monitor;
 - (void)removeAllObservers;
 
 @end

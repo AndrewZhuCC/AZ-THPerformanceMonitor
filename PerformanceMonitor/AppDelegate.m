@@ -24,7 +24,7 @@
     [[PerformanceMonitorManager sharedInstance] addObserver:[[PerformanceMonitor alloc] initWithConfiguration:config]];
     config.monitorType = MonitorType_CPU;
     config.milliseconds = 100;
-    config.cpuUsageToNotify = 5.f;
+    config.cpuUsageToNotify = 90.f;
     [[PerformanceMonitorManager sharedInstance] addObserver:[[PerformanceMonitor alloc] initWithConfiguration:config]];
     
     return YES;

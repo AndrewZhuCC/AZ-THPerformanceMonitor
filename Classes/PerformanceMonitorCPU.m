@@ -40,7 +40,12 @@
         if (sself) {
             double cpuUsage = [sself cpuUsage];
             if (cpuUsage >= sself.cpuUsageToNotify) {
-                NSLog(@"------\nCPU Usage Over:%.02f%% Now:%.02f%%\n------", 100.f * self.cpuUsageToNotify, 100.f * cpuUsage);
+                NSLog(@"------\nCPU Usage Over:%.02f%% Now:%.02f%%\n------", 100.f * sself.cpuUsageToNotify, 100.f * cpuUsage);
+                [sself syncWriteCrashLogToFileWithName:[NSString stringWithFormat:@"CPU(PercentLimit:%@ ObserveTimeStamp:%@", @(sself.cpuUsageToNotify), @(sself.millisecondsToObserve)]];
+                dispatch_suspend(sself.timer);
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(sself.millisecondsToObserve * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
+                    dispatch_resume(sself.timer);
+                });
             }
         }
     });

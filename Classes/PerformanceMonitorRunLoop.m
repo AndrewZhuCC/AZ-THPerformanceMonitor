@@ -7,7 +7,6 @@
 //
 
 #import "PerformanceMonitorRunLoop.h"
-#import <CrashReporter/CrashReporter.h>
 
 @interface PerformanceMonitorRunLoop ()
 
@@ -93,16 +92,8 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
                     if (++self.timeoutCount < self.timeout)
                         continue;
                     
-                    PLCrashReporterConfig *config = [[PLCrashReporterConfig alloc] initWithSignalHandlerType:PLCrashReporterSignalHandlerTypeBSD
-                                                                                       symbolicationStrategy:PLCrashReporterSymbolicationStrategyAll];
-                    PLCrashReporter *crashReporter = [[PLCrashReporter alloc] initWithConfiguration:config];
-                    
-                    NSData *data = [crashReporter generateLiveReport];
-                    PLCrashReport *reporter = [[PLCrashReport alloc] initWithData:data error:NULL];
-                    NSString *report = [PLCrashReportTextFormatter stringValueForCrashReport:reporter
-                                                                              withTextFormat:PLCrashReportTextFormatiOS];
-                    
-                    NSLog(@"------------\n%@\n------------", report);
+                    NSLog(@"RunLoop observe fires");
+                    [self asyncWriteCrashLogToFileWithName:[NSString stringWithFormat:@"RunLoop(LimitCount:%@ ObserveTimestamp:%@", @(self.timeout), @(self.milliseconds)]];
                 }
             }
             self.timeoutCount = 0;
