@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "PerformanceMonitorManager.h"
 
 @interface ViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -59,6 +60,10 @@
     
     cell.textLabel.text = cellText;
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [[PerformanceMonitorManager sharedInstance] removeAllObservers];
 }
 
 @end

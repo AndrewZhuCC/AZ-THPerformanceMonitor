@@ -13,7 +13,8 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _millisecondToNotify = 10;
+        _monitorType = MonitorType_RunLoop;
+        _milliseconds = 10;
         _countToNotify = 1;
         _cpuUsageToNotify = 90.0;
     }

@@ -18,9 +18,14 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     PerformanceMonitorConfiguration *config = PerformanceMonitorConfiguration.new;
-    config.millisecondToNotify = 50;
-    config.countToNotify = 5;
-    [[PerformanceMonitorManager sharedInstance] addObserve:[[PerformanceMonitor alloc] initWithConfiguration:config]];
+    config.monitorType = MonitorType_RunLoop;
+    config.milliseconds = 50;
+    config.countToNotify = 1;
+    [[PerformanceMonitorManager sharedInstance] addObserver:[[PerformanceMonitor alloc] initWithConfiguration:config]];
+    config.monitorType = MonitorType_CPU;
+    config.milliseconds = 100;
+    config.cpuUsageToNotify = 5.f;
+    [[PerformanceMonitorManager sharedInstance] addObserver:[[PerformanceMonitor alloc] initWithConfiguration:config]];
     
     return YES;
 }

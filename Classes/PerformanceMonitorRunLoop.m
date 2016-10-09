@@ -7,20 +7,20 @@
 //
 
 #import "PerformanceMonitorRunLoop.h"
-#import "PerformanceMonitorConfiguration.h"
 #import <CrashReporter/CrashReporter.h>
 
 @interface PerformanceMonitorRunLoop ()
-{
-    NSUInteger timeout;
-    NSUInteger milliseconds;
-    int timeoutCount;
-    CFRunLoopObserverRef observer;
-    
-    @public
-    dispatch_semaphore_t semaphore;
-    CFRunLoopActivity activity;
-}
+
+@property (nonatomic, assign) NSUInteger timeout;
+@property (nonatomic, assign) NSUInteger milliseconds;
+@property (nonatomic, assign) NSUInteger timeoutCount;
+@property (nonatomic, assign) CFRunLoopObserverRef observer;
+
+@property (nonatomic, strong) dispatch_semaphore_t semaphore;
+@property (nonatomic, assign) CFRunLoopActivity activity;
+
+@property (nonatomic, strong) dispatch_queue_t observeQueue;
+
 @end
 
 @implementation PerformanceMonitorRunLoop
@@ -28,8 +28,9 @@
 - (instancetype)initWithConfiguration:(PerformanceMonitorConfiguration *)configuration {
     self = [super init];
     if (self) {
-        timeout = configuration.countToNotify;
-        milliseconds = configuration.millisecondToNotify;
+        _timeout = configuration.countToNotify;
+        _milliseconds = configuration.milliseconds;
+        _observeQueue = dispatch_queue_create("RunLoop Performance Observe Queue", DISPATCH_QUEUE_SERIAL);
     }
     return self;
 }
@@ -38,58 +39,58 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
 {
     PerformanceMonitorRunLoop *monitor = (__bridge PerformanceMonitorRunLoop*)info;
     
-    monitor->activity = activity;
+    monitor.activity = activity;
     
-    dispatch_semaphore_t semaphore = monitor->semaphore;
+    dispatch_semaphore_t semaphore = monitor.semaphore;
     dispatch_semaphore_signal(semaphore);
 }
 
 - (void)stop
 {
-    if (!observer)
+    if (!self.observer)
         return;
     
-    CFRunLoopRemoveObserver(CFRunLoopGetMain(), observer, kCFRunLoopCommonModes);
-    CFRelease(observer);
-    observer = NULL;
+    CFRunLoopRemoveObserver(CFRunLoopGetMain(), self.observer, kCFRunLoopCommonModes);
+    CFRelease(self.observer);
+    self.observer = NULL;
 }
 
 - (void)start
 {
-    if (observer)
+    if (self.observer)
         return;
     
     // 信号
-    semaphore = dispatch_semaphore_create(0);
+    self.semaphore = dispatch_semaphore_create(0);
     
     // 注册RunLoop状态观察
     CFRunLoopObserverContext context = {0,(__bridge void*)self,NULL,NULL};
-    observer = CFRunLoopObserverCreate(kCFAllocatorDefault,
+    self.observer = CFRunLoopObserverCreate(kCFAllocatorDefault,
                                        kCFRunLoopAllActivities,
                                        YES,
                                        0,
                                        &runLoopObserverCallBack,
                                        &context);
-    CFRunLoopAddObserver(CFRunLoopGetMain(), observer, kCFRunLoopCommonModes);
+    CFRunLoopAddObserver(CFRunLoopGetMain(), self.observer, kCFRunLoopCommonModes);
     
     // 在子线程监控时长
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+    dispatch_async(self.observeQueue, ^{
         while (YES)
         {
-            long st = dispatch_semaphore_wait(semaphore, dispatch_time(DISPATCH_TIME_NOW, milliseconds*NSEC_PER_MSEC));
+            long st = dispatch_semaphore_wait(self.semaphore, dispatch_time(DISPATCH_TIME_NOW, self.milliseconds*NSEC_PER_MSEC));
             if (st != 0)
             {
-                if (!observer)
+                if (!self.observer)
                 {
-                    timeoutCount = 0;
-                    semaphore = 0;
-                    activity = 0;
+                    self.timeoutCount = 0;
+                    self.semaphore = 0;
+                    self.activity = 0;
                     return;
                 }
                 
-                if (activity==kCFRunLoopBeforeSources || activity==kCFRunLoopAfterWaiting)
+                if (self.activity==kCFRunLoopBeforeSources || self.activity==kCFRunLoopAfterWaiting)
                 {
-                    if (++timeoutCount < timeout)
+                    if (++self.timeoutCount < self.timeout)
                         continue;
                     
                     PLCrashReporterConfig *config = [[PLCrashReporterConfig alloc] initWithSignalHandlerType:PLCrashReporterSignalHandlerTypeBSD
@@ -104,7 +105,7 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
                     NSLog(@"------------\n%@\n------------", report);
                 }
             }
-            timeoutCount = 0;
+            self.timeoutCount = 0;
         }
     });
 }

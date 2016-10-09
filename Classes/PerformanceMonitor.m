@@ -8,6 +8,7 @@
 
 #import "PerformanceMonitor.h"
 #import "PerformanceMonitorRunLoop.h"
+#import "PerformanceMonitorCPU.h"
 
 @interface PerformanceMonitor ()
 @end
@@ -22,7 +23,7 @@
         }
             case MonitorType_CPU:
         {
-            return nil;
+            return [[PerformanceMonitorCPU alloc] initWithConfiguration:configuration];
         }
     }
 }

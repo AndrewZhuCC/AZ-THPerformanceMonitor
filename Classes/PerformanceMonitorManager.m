@@ -33,7 +33,7 @@
     return self;
 }
 
-- (void)addObserve:(PerformanceMonitor *)monitor {
+- (void)addObserver:(PerformanceMonitor *)monitor {
     [self.observers addObject:monitor];
     [monitor start];
 }
@@ -41,6 +41,13 @@
 - (void)removeObserver:(PerformanceMonitor *)monitor {
     [monitor stop];
     [self.observers removeObject:monitor];
+}
+
+- (void)removeAllObservers {
+    for (PerformanceMonitor *monitor in self.observers) {
+        [monitor stop];
+    }
+    [self.observers removeAllObjects];
 }
 
 @end

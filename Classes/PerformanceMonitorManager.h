@@ -9,7 +9,12 @@
 #import "PerformanceMonitor.h"
 
 @interface PerformanceMonitorManager : NSObject
+
 + (instancetype)sharedInstance;
-- (void)addObserve:(PerformanceMonitor *)monitor;
+
+- (void)addObserver:(PerformanceMonitor *)monitor;
+
 - (void)removeObserver:(PerformanceMonitor *)monitor;
+- (void)removeAllObservers;
+
 @end
