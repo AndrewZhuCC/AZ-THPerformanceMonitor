@@ -93,7 +93,7 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
                         continue;
                     
                     NSLog(@"RunLoop observe fires");
-                    [self asyncWriteCrashLogToFileWithName:[NSString stringWithFormat:@"RunLoop(LimitCount:%@ ObserveTimestamp:%@", @(self.timeout), @(self.milliseconds)]];
+                    [self asyncWriteCrashLogToFileWithName:[NSString stringWithFormat:@"RunLoop(LimitCount:%@ ObserveTimestamp:%@)", @(self.timeout), @(self.milliseconds)]];
                 }
             }
             self.timeoutCount = 0;
