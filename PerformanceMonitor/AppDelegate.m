@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "PerformanceMonitorManager.h"
+#import "PerformanceMonitorMarco.h"
 
 @interface AppDelegate ()
 
@@ -17,15 +17,10 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    PerformanceMonitorConfiguration *config = PerformanceMonitorConfiguration.new;
-    config.monitorType = MonitorType_RunLoop;
-    config.milliseconds = 50;
-    config.countToNotify = 1;
-    [[PerformanceMonitorManager sharedInstance] addObserver:[[PerformanceMonitor alloc] initWithConfiguration:config]];
-    config.monitorType = MonitorType_CPU;
-    config.milliseconds = 100;
-    config.cpuUsageToNotify = 90.f;
-    [[PerformanceMonitorManager sharedInstance] addObserver:[[PerformanceMonitor alloc] initWithConfiguration:config]];
+    PerformanceMonitor *monitor = ObserveRunLoop(1, 50)
+    PerformanceMonitor *anotherMonitor = ObserveCPU(90.f, 500)
+    NSLog(@"monitor:%@", monitor);
+    NSLog(@"amonitor:%@", anotherMonitor);
     
     return YES;
 }

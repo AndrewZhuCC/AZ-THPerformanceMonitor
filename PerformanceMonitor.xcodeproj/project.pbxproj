@@ -32,6 +32,7 @@
 		49CB4D6F1DAA643B0037FCFC /* PerformanceMonitorRunLoop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceMonitorRunLoop.m; sourceTree = "<group>"; };
 		49CB4D711DAA6D8E0037FCFC /* PerformanceMonitorCPU.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PerformanceMonitorCPU.h; sourceTree = "<group>"; };
 		49CB4D721DAA6D8E0037FCFC /* PerformanceMonitorCPU.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PerformanceMonitorCPU.m; sourceTree = "<group>"; };
+		49CB4D871DAB21520037FCFC /* PerformanceMonitorMarco.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PerformanceMonitorMarco.h; sourceTree = "<group>"; };
 		B8B10F9D1BF5E02300447088 /* PerformanceMonitor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PerformanceMonitor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8B10FA11BF5E02300447088 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B8B10FA31BF5E02300447088 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -70,6 +71,7 @@
 				49CB4D6F1DAA643B0037FCFC /* PerformanceMonitorRunLoop.m */,
 				49CB4D711DAA6D8E0037FCFC /* PerformanceMonitorCPU.h */,
 				49CB4D721DAA6D8E0037FCFC /* PerformanceMonitorCPU.m */,
+				49CB4D871DAB21520037FCFC /* PerformanceMonitorMarco.h */,
 			);
 			path = Classes;
 			sourceTree = SOURCE_ROOT;
