@@ -55,7 +55,7 @@
 - (void)doWriteLogWithName:(NSString *)name {
     NSDate *date = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy-mm-dd-HH:mm:ss-SSS"];
+    [formatter setDateFormat:@"yyyy#MM#dd-HH$mm$ss$SSS"];
     NSString *logName = [NSString stringWithFormat:@"%@-%@.crash", [formatter stringFromDate:date], name];
     PLCrashReporterConfig *config = [[PLCrashReporterConfig alloc] initWithSignalHandlerType:PLCrashReporterSignalHandlerTypeBSD
                                                                        symbolicationStrategy:PLCrashReporterSymbolicationStrategySymbolTable];
