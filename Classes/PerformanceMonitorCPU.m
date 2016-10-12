@@ -34,13 +34,14 @@
 - (void)start {
     self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, self.observeQueue);
     dispatch_source_set_timer(self.timer, DISPATCH_TIME_NOW, self.millisecondsToObserve * NSEC_PER_MSEC, 0);
+    
     __weak typeof(self) wself = self;
     dispatch_source_set_event_handler(self.timer, ^{
         typeof(wself) sself = wself;
         if (sself) {
             double cpuUsage = [sself cpuUsage];
             if (cpuUsage >= sself.cpuUsageToNotify) {
-                NSLog(@"------\nCPU Usage Over:%.02f%% Now:%.02f%%\n------", 100.f * sself.cpuUsageToNotify, 100.f * cpuUsage);
+                printf("<------\nCPU Usage Over:%.02f%% Now:%.02f%%\n------>\n", 100.f * sself.cpuUsageToNotify, 100.f * cpuUsage);
                 [sself syncWriteCrashLogToFileWithName:[NSString stringWithFormat:@"CPU(PercentLimit:%@%% ObserveTimeStamp:%@ Now:%.02f)", @(sself.cpuUsageToNotify * 100), @(sself.millisecondsToObserve), 100.f * cpuUsage]];
                 dispatch_suspend(sself.timer);
                 dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(sself.millisecondsToObserve * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
@@ -58,6 +59,18 @@
         self.timer = nil;
     }
 }
+
+- (void)setPause:(BOOL)pause {
+    [super setPause:pause];
+    if (self.timer) {
+        if (pause) {
+            dispatch_suspend(self.timer);
+        } else {
+            dispatch_resume(self.timer);
+        }
+    }
+}
+
 - (float)cpuUsage
 {
     kern_return_t			kr = { 0 };

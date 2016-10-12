@@ -17,4 +17,6 @@
 - (PerformanceMonitor *)removeObserver:(PerformanceMonitor *)monitor;
 - (void)removeAllObservers;
 
+- (void)pauseForIO:(BOOL)pause;
+
 @end

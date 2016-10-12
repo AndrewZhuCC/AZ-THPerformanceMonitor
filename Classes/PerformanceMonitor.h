@@ -10,6 +10,8 @@
 
 @interface PerformanceMonitor : NSObject
 
+@property (nonatomic, assign, getter=isPaused) BOOL pause;
+
 - (instancetype)initWithConfiguration:(PerformanceMonitorConfiguration *)configuration;
 - (void)start;
 - (void)stop;

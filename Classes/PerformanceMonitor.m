@@ -7,6 +7,7 @@
 //
 
 #import "PerformanceMonitor.h"
+#import "PerformanceMonitorManager.h"
 #import "PerformanceMonitorRunLoop.h"
 #import "PerformanceMonitorCPU.h"
 #import <CrashReporter/CrashReporter.h>
@@ -36,6 +37,7 @@
     self = [super init];
     if (self) {
         _ioQueue = dispatch_queue_create("Monitor IO Queue", DISPATCH_QUEUE_SERIAL);
+        _pause = NO;
     }
     return self;
 }
@@ -53,6 +55,8 @@
 }
 
 - (void)doWriteLogWithName:(NSString *)name {
+    [[PerformanceMonitorManager sharedInstance] pauseForIO:YES];
+    
     NSDate *date = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"yyyy#MM#dd-HH$mm$ss$SSS"];
@@ -84,6 +88,8 @@
             NSLog(@"Create Directory fail:%@", error);
         }
     }
+    
+    [[PerformanceMonitorManager sharedInstance] pauseForIO:NO];
 }
 
 - (void)start {

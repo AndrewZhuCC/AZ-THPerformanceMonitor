@@ -56,4 +56,10 @@
     [self.observers removeAllObjects];
 }
 
+- (void)pauseForIO:(BOOL)pause {
+    for (PerformanceMonitor *monitor in self.observers) {
+        monitor.pause = pause;
+    }
+}
+
 @end

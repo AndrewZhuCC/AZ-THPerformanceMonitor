@@ -20,6 +20,8 @@
 
 @property (nonatomic, strong) dispatch_queue_t observeQueue;
 
+@property (nonatomic, strong) dispatch_semaphore_t ioLock;
+
 @end
 
 @implementation PerformanceMonitorRunLoop
@@ -30,6 +32,7 @@
         _timeout = configuration.countToNotify;
         _milliseconds = configuration.milliseconds;
         _observeQueue = dispatch_queue_create("RunLoop Performance Observe Queue", DISPATCH_QUEUE_SERIAL);
+        _ioLock = dispatch_semaphore_create(0);
     }
     return self;
 }
@@ -40,8 +43,11 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
     
     monitor.activity = activity;
     
-    dispatch_semaphore_t semaphore = monitor.semaphore;
-    dispatch_semaphore_signal(semaphore);
+    if (monitor.observer && !monitor.isPaused) {
+        dispatch_semaphore_t semaphore = monitor.semaphore;
+        dispatch_semaphore_wait(semaphore, NSEC_PER_USEC);
+        dispatch_semaphore_signal(semaphore);
+    }
 }
 
 - (void)stop
@@ -76,29 +82,41 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
     dispatch_async(self.observeQueue, ^{
         while (YES)
         {
+            if (!self.observer)
+            {
+                self.timeoutCount = 0;
+                self.semaphore = 0;
+                self.activity = 0;
+                return;
+            }
+            
+            if (self.isPaused) {
+                dispatch_semaphore_wait(self.ioLock, DISPATCH_TIME_FOREVER);
+            }
+            
             long st = dispatch_semaphore_wait(self.semaphore, dispatch_time(DISPATCH_TIME_NOW, self.milliseconds*NSEC_PER_MSEC));
             if (st != 0)
             {
-                if (!self.observer)
-                {
-                    self.timeoutCount = 0;
-                    self.semaphore = 0;
-                    self.activity = 0;
-                    return;
-                }
-                
                 if (self.activity==kCFRunLoopBeforeSources || self.activity==kCFRunLoopAfterWaiting)
                 {
-                    if (++self.timeoutCount < self.timeout)
+                    if ((++self.timeoutCount < self.timeout) || self.isPaused)
                         continue;
                     
-                    NSLog(@"RunLoop observe fires");
+                    printf("------>\nRunLoop observe fires\n<------\n");
                     [self asyncWriteCrashLogToFileWithName:[NSString stringWithFormat:@"RunLoop(LimitCount:%@ ObserveTimestamp:%@)", @(self.timeout), @(self.milliseconds)]];
                 }
             }
             self.timeoutCount = 0;
         }
     });
+}
+
+- (void)setPause:(BOOL)pause {
+    [super setPause:pause];
+    if (!pause && self.observer) {
+        dispatch_semaphore_wait(self.ioLock, NSEC_PER_USEC);
+        dispatch_semaphore_signal(self.ioLock);
+    }
 }
 
 @end
