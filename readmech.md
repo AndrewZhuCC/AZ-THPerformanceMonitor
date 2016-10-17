@@ -1,12 +1,3 @@
----
-title: AZ-THPerformanceMonitor
-date: 2016-10-17 14:39:04
-tags:
-- iOS
-- Framework
-- OpenSource
----
-
 # AZ-THPerformanceMonitor
 [AZ-THPerformanceMonitor](https://github.com/AndrewZhuCC/AZ-THPerformanceMonitor) 是一个基于 [老谭笔记](http://www.tanhao.me/code/151113.html/) 博客中对 **主线程RunLoop** 卡顿的监控demo，并集成 **CPU使用率** 监控功能的框架。当`RunLoop`耗时超过设定的时间一定次数或者CPU使用率超过一定限度，则会抓取当前所有线程的函数调用栈，以`*.crash`的格式保存在`~/Documents/PerformanceMonitorLogs/`文件夹下。目前开源在 [GitHub](https://github.com/AndrewZhuCC/AZ-THPerformanceMonitor) 上。
 
