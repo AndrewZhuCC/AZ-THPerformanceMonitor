@@ -1,14 +1,14 @@
 //
-//  PerformanceMonitorRunLoop.m
+//  AZPerformanceMonitorRunLoop.m
 //  PerformanceMonitor
 //
 //  Created by 朱安智 on 2016/10/9.
 //  Copyright © 2016年 Andrew. All rights reserved.
 //
 
-#import "PerformanceMonitorRunLoop.h"
+#import "AZPerformanceMonitorRunLoop.h"
 
-@interface PerformanceMonitorRunLoop ()
+@interface AZPerformanceMonitorRunLoop ()
 
 @property (nonatomic, assign) NSUInteger timeout;
 @property (nonatomic, assign) NSUInteger milliseconds;
@@ -24,9 +24,9 @@
 
 @end
 
-@implementation PerformanceMonitorRunLoop
+@implementation AZPerformanceMonitorRunLoop
 
-- (instancetype)initWithConfiguration:(PerformanceMonitorConfiguration *)configuration {
+- (instancetype)initWithConfiguration:(AZPerformanceMonitorConfiguration *)configuration {
     self = [super init];
     if (self) {
         _timeout = configuration.countToNotify;
@@ -39,7 +39,7 @@
 
 static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActivity activity, void *info)
 {
-    PerformanceMonitorRunLoop *monitor = (__bridge PerformanceMonitorRunLoop*)info;
+    AZPerformanceMonitorRunLoop *monitor = (__bridge AZPerformanceMonitorRunLoop*)info;
     
     monitor.activity = activity;
     

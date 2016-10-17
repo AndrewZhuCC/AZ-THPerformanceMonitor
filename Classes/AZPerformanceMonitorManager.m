@@ -1,23 +1,23 @@
 //
-//  PerformanceMonitorManager.m
-//  PerformanceMonitor
+//  AZPerformanceMonitorManager.m
+//  AZPerformanceMonitor
 //
 //  Created by 朱安智 on 2016/10/9.
 //  Copyright © 2016年 Andrew. All rights reserved.
 //
 
-#import "PerformanceMonitorManager.h"
+#import "AZPerformanceMonitorManager.h"
 
-@interface PerformanceMonitorManager ()
+@interface AZPerformanceMonitorManager ()
 
-@property (nonatomic, strong) NSMutableArray<PerformanceMonitor *> *observers;
+@property (nonatomic, strong) NSMutableArray<AZPerformanceMonitor *> *observers;
 
 @end
 
-@implementation PerformanceMonitorManager
+@implementation AZPerformanceMonitorManager
 
 + (instancetype)sharedInstance {
-    static PerformanceMonitorManager *instance = nil;
+    static AZPerformanceMonitorManager *instance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [[self alloc] init];
@@ -33,7 +33,7 @@
     return self;
 }
 
-- (PerformanceMonitor *)addObserver:(PerformanceMonitor *)monitor {
+- (AZPerformanceMonitor *)addObserver:(AZPerformanceMonitor *)monitor {
     if (monitor) {
         [self.observers addObject:monitor];
         [monitor start];
@@ -41,7 +41,7 @@
     return monitor;
 }
 
-- (PerformanceMonitor *)removeObserver:(PerformanceMonitor *)monitor {
+- (AZPerformanceMonitor *)removeObserver:(AZPerformanceMonitor *)monitor {
     if (monitor) {
         [monitor stop];
         [self.observers removeObject:monitor];
@@ -50,14 +50,14 @@
 }
 
 - (void)removeAllObservers {
-    for (PerformanceMonitor *monitor in self.observers) {
+    for (AZPerformanceMonitor *monitor in self.observers) {
         [monitor stop];
     }
     [self.observers removeAllObjects];
 }
 
 - (void)pauseForIO:(BOOL)pause {
-    for (PerformanceMonitor *monitor in self.observers) {
+    for (AZPerformanceMonitor *monitor in self.observers) {
         monitor.pause = pause;
     }
 }

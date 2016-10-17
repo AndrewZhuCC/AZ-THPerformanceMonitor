@@ -1,13 +1,13 @@
 //
-//  PerformanceMonitorRunLoop.h
+//  AZPerformanceMonitorRunLoop.h
 //  PerformanceMonitor
 //
 //  Created by 朱安智 on 2016/10/9.
 //  Copyright © 2016年 Andrew. All rights reserved.
 //
 
-#import "PerformanceMonitor.h"
+#import "AZPerformanceMonitor.h"
 
-@interface PerformanceMonitorRunLoop : PerformanceMonitor
+@interface AZPerformanceMonitorRunLoop : AZPerformanceMonitor
 
 @end

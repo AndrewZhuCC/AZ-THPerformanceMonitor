@@ -7,7 +7,7 @@
 //
 
 #import "ViewController.h"
-#import "PerformanceMonitorManager.h"
+#import "AZPerformanceMonitorManager.h"
 
 @interface ViewController ()<UITableViewDataSource,UITableViewDelegate>
 {
@@ -63,7 +63,7 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [[PerformanceMonitorManager sharedInstance] removeAllObservers];
+    [[AZPerformanceMonitorManager sharedInstance] removeAllObservers];
 }
 
 @end

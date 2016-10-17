@@ -1,34 +1,34 @@
 //
-//  PerformanceMonitor.m
+//  AZPerformanceMonitor.m
 //  SuperApp
 //
 //  Created by tanhao on 15/11/12.
 //  Copyright © 2015年 Andrew. All rights reserved.
 //
 
-#import "PerformanceMonitor.h"
-#import "PerformanceMonitorManager.h"
-#import "PerformanceMonitorRunLoop.h"
-#import "PerformanceMonitorCPU.h"
+#import "AZPerformanceMonitor.h"
+#import "AZPerformanceMonitorManager.h"
+#import "AZPerformanceMonitorRunLoop.h"
+#import "AZPerformanceMonitorCPU.h"
 #import <CrashReporter/CrashReporter.h>
 
-@interface PerformanceMonitor ()
+@interface AZPerformanceMonitor ()
 
 @property (nonatomic, strong) dispatch_queue_t ioQueue;
 
 @end
 
-@implementation PerformanceMonitor
+@implementation AZPerformanceMonitor
 
-- (instancetype)initWithConfiguration:(PerformanceMonitorConfiguration *)configuration {
+- (instancetype)initWithConfiguration:(AZPerformanceMonitorConfiguration *)configuration {
     switch (configuration.monitorType) {
             case MonitorType_RunLoop:
         {
-            return [[PerformanceMonitorRunLoop alloc] initWithConfiguration:configuration];
+            return [[AZPerformanceMonitorRunLoop alloc] initWithConfiguration:configuration];
         }
             case MonitorType_CPU:
         {
-            return [[PerformanceMonitorCPU alloc] initWithConfiguration:configuration];
+            return [[AZPerformanceMonitorCPU alloc] initWithConfiguration:configuration];
         }
     }
 }
@@ -55,7 +55,7 @@
 }
 
 - (void)doWriteLogWithName:(NSString *)name {
-    [[PerformanceMonitorManager sharedInstance] pauseForIO:YES];
+    [[AZPerformanceMonitorManager sharedInstance] pauseForIO:YES];
     
     NSDate *date = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
@@ -89,7 +89,7 @@
         }
     }
     
-    [[PerformanceMonitorManager sharedInstance] pauseForIO:NO];
+    [[AZPerformanceMonitorManager sharedInstance] pauseForIO:NO];
 }
 
 - (void)start {

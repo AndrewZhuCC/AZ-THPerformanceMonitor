@@ -1,5 +1,5 @@
 //
-//  PerformanceMonitorConfiguration.h
+//  AZPerformanceMonitorConfiguration.h
 //  PerformanceMonitor
 //
 //  Created by 朱安智 on 2016/10/9.
@@ -13,7 +13,7 @@ typedef NS_ENUM(NSUInteger, MonitorType) {
     MonitorType_CPU,
 };
 
-@interface PerformanceMonitorConfiguration : NSObject
+@interface AZPerformanceMonitorConfiguration : NSObject
 
 @property (nonatomic, assign) MonitorType monitorType;
 

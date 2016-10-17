@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "PerformanceMonitorMarco.h"
+#import "AZPerformanceMonitorMarco.h"
 
 @interface AppDelegate ()
 
@@ -17,8 +17,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    PerformanceMonitor *monitor = ObserveRunLoop(1, 10)
-    PerformanceMonitor *anotherMonitor = ObserveCPU(90.f, 500)
+    AZPerformanceMonitor *monitor = ObserveRunLoop(1, 10)
+    AZPerformanceMonitor *anotherMonitor = ObserveCPU(90.f, 500)
     NSLog(@"monitor:%@", monitor);
     NSLog(@"amonitor:%@", anotherMonitor);
     

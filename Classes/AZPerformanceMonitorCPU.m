@@ -1,15 +1,15 @@
 //
-//  PerformanceMonitorCPU.m
+//  AZPerformanceMonitorCPU.m
 //  PerformanceMonitor
 //
 //  Created by 朱安智 on 2016/10/9.
 //  Copyright © 2016年 Andrew. All rights reserved.
 //
 
-#import "PerformanceMonitorCPU.h"
+#import "AZPerformanceMonitorCPU.h"
 #import <mach/mach.h>
 
-@interface PerformanceMonitorCPU ()
+@interface AZPerformanceMonitorCPU ()
 
 @property (nonatomic, assign) double cpuUsageToNotify;
 @property (nonatomic, assign) NSUInteger millisecondsToObserve;
@@ -19,9 +19,9 @@
 
 @end
 
-@implementation PerformanceMonitorCPU
+@implementation AZPerformanceMonitorCPU
 
-- (instancetype)initWithConfiguration:(PerformanceMonitorConfiguration *)configuration {
+- (instancetype)initWithConfiguration:(AZPerformanceMonitorConfiguration *)configuration {
     self = [super init];
     if (self) {
         _cpuUsageToNotify = configuration.cpuUsageToNotify / 100.f;
