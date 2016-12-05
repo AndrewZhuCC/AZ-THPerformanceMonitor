@@ -19,4 +19,6 @@
 
 - (void)pauseForIO:(BOOL)pause;
 
+- (NSArray<AZPerformanceMonitor *> *)monitorsWithType:(MonitorType)type;
+
 @end

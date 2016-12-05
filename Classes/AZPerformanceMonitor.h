@@ -12,6 +12,8 @@
 
 @property (nonatomic, assign, getter=isPaused) BOOL pause;
 
+@property (nonatomic, strong, readonly) AZPerformanceMonitorConfiguration *config;
+
 - (instancetype)initWithConfiguration:(AZPerformanceMonitorConfiguration *)configuration;
 - (void)start;
 - (void)stop;

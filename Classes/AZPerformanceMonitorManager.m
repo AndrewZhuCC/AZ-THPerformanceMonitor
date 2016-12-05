@@ -62,4 +62,14 @@
     }
 }
 
+- (NSArray<AZPerformanceMonitor *> *)monitorsWithType:(MonitorType)type {
+    NSMutableArray *tempResult = [NSMutableArray array];
+    for (AZPerformanceMonitor *monitor in self.observers) {
+        if (monitor.config.monitorType == type) {
+            [tempResult addObject:monitor];
+        }
+    }
+    return [tempResult copy];
+}
+
 @end

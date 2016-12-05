@@ -21,6 +21,7 @@
 @implementation AZPerformanceMonitor
 
 - (instancetype)initWithConfiguration:(AZPerformanceMonitorConfiguration *)configuration {
+    _config = configuration;
     switch (configuration.monitorType) {
             case MonitorType_RunLoop:
         {
