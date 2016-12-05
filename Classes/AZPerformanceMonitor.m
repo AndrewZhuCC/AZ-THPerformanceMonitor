@@ -16,20 +16,25 @@
 
 @property (nonatomic, strong) dispatch_queue_t ioQueue;
 
+@property (nonatomic, strong) AZPerformanceMonitorConfiguration *config;
+
 @end
 
 @implementation AZPerformanceMonitor
 
 - (instancetype)initWithConfiguration:(AZPerformanceMonitorConfiguration *)configuration {
-    _config = configuration;
     switch (configuration.monitorType) {
             case MonitorType_RunLoop:
         {
-            return [[AZPerformanceMonitorRunLoop alloc] initWithConfiguration:configuration];
+            AZPerformanceMonitor *result = [[AZPerformanceMonitorRunLoop alloc] initWithConfiguration:configuration];
+            result.config = configuration;
+            return result;
         }
             case MonitorType_CPU:
         {
-            return [[AZPerformanceMonitorCPU alloc] initWithConfiguration:configuration];
+            AZPerformanceMonitor *result = [[AZPerformanceMonitorCPU alloc] initWithConfiguration:configuration];
+            result.config = configuration;
+            return result;
         }
     }
 }
