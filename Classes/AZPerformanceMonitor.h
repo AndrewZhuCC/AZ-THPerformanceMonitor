@@ -16,7 +16,7 @@
 
 - (instancetype)initWithConfiguration:(AZPerformanceMonitorConfiguration *)configuration;
 - (void)start;
-- (void)stop;
+- (void)stopWithCompletionHandler:(void(^)())completionHandler;
 
 - (void)asyncWriteCrashLogToFileWithName:(NSString *)name;
 - (void)syncWriteCrashLogToFileWithName:(NSString *)name;

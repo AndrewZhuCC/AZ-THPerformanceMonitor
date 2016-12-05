@@ -50,7 +50,7 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
     }
 }
 
-- (void)stop
+- (void)stopWithCompletionHandler:(void(^)())completionHandler
 {
     if (!self.observer)
         return;
@@ -58,6 +58,7 @@ static void runLoopObserverCallBack(CFRunLoopObserverRef observer, CFRunLoopActi
     CFRunLoopRemoveObserver(CFRunLoopGetMain(), self.observer, kCFRunLoopCommonModes);
     CFRelease(self.observer);
     self.observer = NULL;
+    completionHandler();
 }
 
 - (void)start

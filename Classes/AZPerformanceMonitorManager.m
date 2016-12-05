@@ -43,17 +43,23 @@
 
 - (AZPerformanceMonitor *)removeObserver:(AZPerformanceMonitor *)monitor {
     if (monitor) {
-        [monitor stop];
-        [self.observers removeObject:monitor];
+        __weak typeof(monitor) wmonitor = monitor;
+        __weak typeof(self) wself = self;
+        [monitor stopWithCompletionHandler:^{
+            [wself.observers removeObject:wmonitor];
+        }];
     }
     return monitor;
 }
 
 - (void)removeAllObservers {
     for (AZPerformanceMonitor *monitor in self.observers) {
-        [monitor stop];
+        __weak typeof(monitor) wmonitor = monitor;
+        __weak typeof(self) wself = self;
+        [monitor stopWithCompletionHandler:^{
+            [wself.observers removeObject:wmonitor];
+        }];
     }
-    [self.observers removeAllObjects];
 }
 
 - (void)pauseForIO:(BOOL)pause {

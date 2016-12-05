@@ -102,7 +102,7 @@
     NSAssert(0, @"Must be called in Subclass");
 }
 
-- (void)stop {
+- (void)stopWithCompletionHandler:(void(^)())completionHandler {
     NSAssert(0, @"Must be called in Subclass");
 }
 

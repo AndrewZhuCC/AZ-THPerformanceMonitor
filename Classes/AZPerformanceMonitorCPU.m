@@ -44,8 +44,8 @@
                 printf("<------\nCPU Usage Over:%.02f%% Now:%.02f%%\n------>\n", 100.f * sself.cpuUsageToNotify, 100.f * cpuUsage);
                 [sself syncWriteCrashLogToFileWithName:[NSString stringWithFormat:@"CPU(PercentLimit:%@%% ObserveTimeStamp:%@ Now:%.02f)", @(sself.cpuUsageToNotify * 100), @(sself.millisecondsToObserve), 100.f * cpuUsage]];
                 dispatch_suspend(sself.timer);
-                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(sself.millisecondsToObserve * NSEC_PER_MSEC)), dispatch_get_main_queue(), ^{
-                    dispatch_resume(sself.timer);
+                dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(sself.millisecondsToObserve * NSEC_PER_MSEC)), sself.observeQueue, ^{
+                    dispatch_resume(wself.timer);
                 });
             }
         }
@@ -53,22 +53,26 @@
     dispatch_resume(self.timer);
 }
 
-- (void)stop {
-    if (self.timer) {
-        dispatch_source_cancel(self.timer);
-        self.timer = nil;
-    }
+- (void)stopWithCompletionHandler:(void(^)())completionHandler {
+    dispatch_async(self.observeQueue, ^{
+        if (self.timer) {
+            dispatch_source_set_cancel_handler(self.timer, completionHandler);
+            dispatch_source_cancel(self.timer);
+        }
+    });
 }
 
 - (void)setPause:(BOOL)pause {
-    [super setPause:pause];
-    if (self.timer) {
-        if (pause) {
-            dispatch_suspend(self.timer);
-        } else {
-            dispatch_resume(self.timer);
+    dispatch_async(self.observeQueue, ^{
+        [super setPause:pause];
+        if (self.timer) {
+            if (pause) {
+                dispatch_suspend(self.timer);
+            } else {
+                dispatch_resume(self.timer);
+            }
         }
-    }
+    });
 }
 
 - (float)cpuUsage
