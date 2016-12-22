@@ -46,7 +46,9 @@
         __weak typeof(monitor) wmonitor = monitor;
         __weak typeof(self) wself = self;
         [monitor stopWithCompletionHandler:^{
-            [wself.observers removeObject:wmonitor];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [wself.observers removeObject:wmonitor];
+            });
         }];
     }
     return monitor;
