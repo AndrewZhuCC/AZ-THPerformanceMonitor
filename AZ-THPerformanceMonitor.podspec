@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "AZ-THPerformanceMonitor"
-  s.version      = "0.0.12"
+  s.version      = "0.0.13"
   s.summary      = "iOS performance monitor."
   s.homepage     = "https://github.com/AndrewZhuCC/AZ-THPerformanceMonitor"
   s.license      = { :type => "MIT", :file => "LICENSE" }

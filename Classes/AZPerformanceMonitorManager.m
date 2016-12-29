@@ -41,13 +41,14 @@
     return monitor;
 }
 
-- (AZPerformanceMonitor *)removeObserver:(AZPerformanceMonitor *)monitor {
+- (AZPerformanceMonitor *)removeObserver:(AZPerformanceMonitor *)monitor withCompletionHandler:(void (^)())completion {
     if (monitor) {
         __weak typeof(monitor) wmonitor = monitor;
         __weak typeof(self) wself = self;
         [monitor stopWithCompletionHandler:^{
             dispatch_async(dispatch_get_main_queue(), ^{
                 [wself.observers removeObject:wmonitor];
+                completion();
             });
         }];
     }

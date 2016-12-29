@@ -60,6 +60,9 @@
 - (void)stopWithCompletionHandler:(void(^)())completionHandler {
     dispatch_async(self.observeQueue, ^{
         if (self.timer) {
+            if (self.isPaused) {
+                dispatch_resume(self.timer);
+            }
             dispatch_source_set_cancel_handler(self.timer, completionHandler);
             dispatch_source_cancel(self.timer);
         }

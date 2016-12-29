@@ -14,7 +14,7 @@
 
 - (AZPerformanceMonitor *)addObserver:(AZPerformanceMonitor *)monitor;
 
-- (AZPerformanceMonitor *)removeObserver:(AZPerformanceMonitor *)monitor;
+- (AZPerformanceMonitor *)removeObserver:(AZPerformanceMonitor *)monitor withCompletionHandler:(void (^)())completion;
 - (void)removeAllObservers;
 
 - (void)pauseForIO:(BOOL)pause;
