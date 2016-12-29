@@ -52,7 +52,9 @@
         [self syncWriteCrashLogToFileWithName:[NSString stringWithFormat:@"CPU(PercentLimit:%@%% ObserveTimeStamp:%@ Now:%.02f)", @(self.cpuUsageToNotify * 100), @(self.millisecondsToObserve), 100.f * cpuUsage]];
         dispatch_suspend(self.timer);
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.millisecondsToObserve * NSEC_PER_MSEC)), self.observeQueue, ^{
-            dispatch_resume(self.timer);
+            if (self && self.timer) {
+                dispatch_resume(self.timer);
+            }
         });
     }
 }
