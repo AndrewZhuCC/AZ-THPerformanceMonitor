@@ -11,6 +11,7 @@
 @interface AZPerformanceMonitorManager ()
 
 @property (nonatomic, strong) NSMutableArray<AZPerformanceMonitor *> *observers;
+@property (nonatomic, strong) NSMutableArray<AZPerformanceMonitor *> *removeObservers;
 
 @end
 
@@ -29,6 +30,7 @@
     self = [super init];
     if (self) {
         _observers = [NSMutableArray array];
+        _removeObservers = [NSMutableArray array];
     }
     return self;
 }
@@ -45,9 +47,11 @@
     if (monitor) {
         __weak typeof(monitor) wmonitor = monitor;
         __weak typeof(self) wself = self;
+        [self.removeObservers addObject:monitor];
+        [self.observers removeObject:monitor];
         [monitor stopWithCompletionHandler:^{
             dispatch_async(dispatch_get_main_queue(), ^{
-                [wself.observers removeObject:wmonitor];
+                [wself.removeObservers removeObject:wmonitor];
                 completion();
             });
         }];
@@ -59,9 +63,11 @@
     for (AZPerformanceMonitor *monitor in self.observers) {
         __weak typeof(monitor) wmonitor = monitor;
         __weak typeof(self) wself = self;
+        [self.removeObservers addObject:monitor];
+        [self.observers removeObject:monitor];
         [monitor stopWithCompletionHandler:^{
             dispatch_async(dispatch_get_main_queue(), ^{
-                [wself.observers removeObject:wmonitor];
+                [wself.removeObservers removeObject:wmonitor];
             });
         }];
     }

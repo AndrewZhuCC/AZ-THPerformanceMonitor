@@ -50,22 +50,15 @@
     if (cpuUsage >= self.cpuUsageToNotify) {
         printf("<------\nCPU Usage Over:%.02f%% Now:%.02f%%\n------>\n", 100.f * self.cpuUsageToNotify, 100.f * cpuUsage);
         [self syncWriteCrashLogToFileWithName:[NSString stringWithFormat:@"CPU(PercentLimit:%@%% ObserveTimeStamp:%@ Now:%.02f)", @(self.cpuUsageToNotify * 100), @(self.millisecondsToObserve), 100.f * cpuUsage]];
-        dispatch_suspend(self.timer);
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(self.millisecondsToObserve * NSEC_PER_MSEC)), self.observeQueue, ^{
-            if (self && self.timer) {
-                dispatch_resume(self.timer);
-            }
-        });
     }
 }
 
 - (void)stopWithCompletionHandler:(void(^)())completionHandler {
     dispatch_async(self.observeQueue, ^{
         if (self.timer) {
-            if (self.isPaused) {
-                dispatch_resume(self.timer);
-            }
             dispatch_source_set_cancel_handler(self.timer, completionHandler);
+            dispatch_source_set_event_handler(self.timer, nil);
+            dispatch_resume(self.timer);
             dispatch_source_cancel(self.timer);
         }
     });
