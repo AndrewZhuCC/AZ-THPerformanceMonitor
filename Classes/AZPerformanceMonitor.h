@@ -8,6 +8,8 @@
 
 #import "AZPerformanceMonitorConfiguration.h"
 
+extern NSNotificationName const AZPerformanceMonitorWritingLog;
+
 @interface AZPerformanceMonitor : NSObject
 
 @property (nonatomic, assign, getter=isPaused) BOOL pause;

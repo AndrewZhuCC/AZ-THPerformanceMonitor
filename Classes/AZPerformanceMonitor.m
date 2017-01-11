@@ -12,6 +12,8 @@
 #import "AZPerformanceMonitorCPU.h"
 #import <CrashReporter/CrashReporter.h>
 
+NSNotificationName const AZPerformanceMonitorWritingLog = @"AZPerformanceMonitorWritingLog";
+
 @interface AZPerformanceMonitor ()
 
 @property (nonatomic, strong) dispatch_queue_t ioQueue;
@@ -62,6 +64,10 @@
 
 - (void)doWriteLogWithName:(NSString *)name {
     [[AZPerformanceMonitorManager sharedInstance] pauseForIO:YES];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:AZPerformanceMonitorWritingLog object:self];
+    });
     
     NSDate *date = [NSDate date];
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
