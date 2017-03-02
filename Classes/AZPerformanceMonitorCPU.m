@@ -49,7 +49,7 @@
     double cpuUsage = [self cpuUsage];
     if (cpuUsage >= self.cpuUsageToNotify) {
         printf("<------\nCPU Usage Over:%.02f%% Now:%.02f%%\n------>\n", 100.f * self.cpuUsageToNotify, 100.f * cpuUsage);
-        [self syncWriteCrashLogToFileWithName:[NSString stringWithFormat:@"CPU(PercentLimit:%@%% ObserveTimeStamp:%@ Now:%.02f)", @(self.cpuUsageToNotify * 100), @(self.millisecondsToObserve), 100.f * cpuUsage]];
+        [self syncWriteCrashLogToFileWithName:[NSString stringWithFormat:@"CPU(PercentLimit-%@%% ObserveTimeStamp-%@ Now-%.02f)", @(self.cpuUsageToNotify * 100), @(self.millisecondsToObserve), 100.f * cpuUsage]];
     }
 }
 
