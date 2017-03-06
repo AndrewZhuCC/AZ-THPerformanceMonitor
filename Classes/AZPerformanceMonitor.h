@@ -20,7 +20,7 @@ extern NSNotificationName const AZPerformanceMonitorWritingLog;
 - (void)start;
 - (void)stopWithCompletionHandler:(void(^)())completionHandler;
 
-- (void)asyncWriteCrashLogToFileWithName:(NSString *)name;
-- (void)syncWriteCrashLogToFileWithName:(NSString *)name;
+- (void)asyncWriteCrashLogToFileWithName:(NSString *)name attach:(NSString *)attach;
+- (void)syncWriteCrashLogToFileWithName:(NSString *)name attach:(NSString *)attach;
 
 @end

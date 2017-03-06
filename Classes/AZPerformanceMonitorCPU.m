@@ -8,6 +8,7 @@
 
 #import "AZPerformanceMonitorCPU.h"
 #import <mach/mach.h>
+#import <pthread/pthread.h>
 
 @interface AZPerformanceMonitorCPU ()
 
@@ -46,10 +47,11 @@
 }
 
 - (void)timerHandler {
-    double cpuUsage = [self cpuUsage];
+    NSArray *threads = [self cpuUsage];
+    double cpuUsage = [[threads lastObject] doubleValue];
     if (cpuUsage >= self.cpuUsageToNotify) {
         printf("<------\nCPU Usage Over:%.02f%% Now:%.02f%%\n------>\n", 100.f * self.cpuUsageToNotify, 100.f * cpuUsage);
-        [self syncWriteCrashLogToFileWithName:[NSString stringWithFormat:@"CPU(PercentLimit-%@%% ObserveTimeStamp-%@ Now-%.02f)", @(self.cpuUsageToNotify * 100), @(self.millisecondsToObserve), 100.f * cpuUsage]];
+        [self syncWriteCrashLogToFileWithName:[NSString stringWithFormat:@"CPU(PercentLimit-%@%% ObserveTimeStamp-%@ Now-%.02f)", @(self.cpuUsageToNotify * 100), @(self.millisecondsToObserve), 100.f * cpuUsage] attach:threads.debugDescription];
     }
 }
 
@@ -77,7 +79,7 @@
     });
 }
 
-- (float)cpuUsage
+- (NSArray *)cpuUsage
 {
     kern_return_t			kr = { 0 };
     task_info_data_t		tinfo = { 0 };
@@ -85,7 +87,7 @@
     
     kr = task_info( mach_task_self(), TASK_BASIC_INFO, (task_info_t)tinfo, &task_info_count );
     if ( KERN_SUCCESS != kr )
-        return 0.0f;
+        return @[@(0.0)];
     
     task_basic_info_t		basic_info = { 0 };
     thread_array_t			thread_list = { 0 };
@@ -99,11 +101,13 @@
     // get threads in the task
     kr = task_threads( mach_task_self(), &thread_list, &thread_count );
     if ( KERN_SUCCESS != kr )
-        return 0.0f;
+        return @[@(0.0)];
     
     long	tot_sec = 0;
     long	tot_usec = 0;
     float	tot_cpu = 0;
+    
+    NSMutableArray *threads = @[].mutableCopy;
     
     for ( int i = 0; i < thread_count; i++ )
     {
@@ -111,22 +115,33 @@
         
         kr = thread_info( thread_list[i], THREAD_BASIC_INFO, (thread_info_t)thinfo, &thread_info_count );
         if ( KERN_SUCCESS != kr )
-            return 0.0f;
+            return @[@(0.0)];
         
         basic_info_th = (thread_basic_info_t)thinfo;
+        
         if ( 0 == (basic_info_th->flags & TH_FLAGS_IDLE) )
         {
             tot_sec = tot_sec + basic_info_th->user_time.seconds + basic_info_th->system_time.seconds;
             tot_usec = tot_usec + basic_info_th->system_time.microseconds + basic_info_th->system_time.microseconds;
             tot_cpu = tot_cpu + basic_info_th->cpu_usage / (float)TH_USAGE_SCALE;
+            
+            pthread_t pthread = pthread_from_mach_thread_np(thread_list[i]);
+            char name[1024] = { 0 };
+            pthread_getname_np(pthread, name, sizeof(name));
+            __uint64_t threadid = 0;
+            pthread_threadid_np(pthread, &threadid);
+            NSString *objName = [NSString stringWithUTF8String:name];
+            [threads addObject:@{@"name":objName, @"id":@(threadid), @"usage":@(basic_info_th->cpu_usage / (float)TH_USAGE_SCALE)}];
         }
     }
     
     kr = vm_deallocate( mach_task_self(), (vm_offset_t)thread_list, thread_count * sizeof(thread_t) );
     if ( KERN_SUCCESS != kr )
-        return 0.0f;
+        return @[@(0.0)];
     
-    return tot_cpu;
+    [threads addObject:@(tot_cpu)];
+    
+    return threads.copy;
 }
 
 @end

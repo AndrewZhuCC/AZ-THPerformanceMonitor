@@ -50,19 +50,19 @@ NSNotificationName const AZPerformanceMonitorWritingLog = @"AZPerformanceMonitor
     return self;
 }
 
-- (void)syncWriteCrashLogToFileWithName:(NSString *)name {
+- (void)syncWriteCrashLogToFileWithName:(NSString *)name attach:(NSString *)attach {
     dispatch_sync(self.ioQueue, ^{
-        [self doWriteLogWithName:name];
+        [self doWriteLogWithName:name attach:attach];
     });
 }
 
-- (void)asyncWriteCrashLogToFileWithName:(NSString *)name {
+- (void)asyncWriteCrashLogToFileWithName:(NSString *)name attach:(NSString *)attach {
     dispatch_async(self.ioQueue, ^{
-        [self doWriteLogWithName:name];
+        [self doWriteLogWithName:name attach:attach];
     });
 }
 
-- (void)doWriteLogWithName:(NSString *)name {
+- (void)doWriteLogWithName:(NSString *)name attach:(NSString *)attach {
     [[AZPerformanceMonitorManager sharedInstance] pauseForIO:YES];
     
     dispatch_async(dispatch_get_main_queue(), ^{
@@ -74,13 +74,14 @@ NSNotificationName const AZPerformanceMonitorWritingLog = @"AZPerformanceMonitor
     [formatter setDateFormat:@"yyyy#MM#dd-HH$mm$ss$SSS"];
     NSString *logName = [NSString stringWithFormat:@"%@-%@.crash", [formatter stringFromDate:date], name];
     PLCrashReporterConfig *config = [[PLCrashReporterConfig alloc] initWithSignalHandlerType:PLCrashReporterSignalHandlerTypeBSD
-                                                                       symbolicationStrategy:PLCrashReporterSymbolicationStrategySymbolTable];
+                                                                       symbolicationStrategy:PLCrashReporterSymbolicationStrategyAll];
     PLCrashReporter *crashReporter = [[PLCrashReporter alloc] initWithConfiguration:config];
     
     NSData *data = [crashReporter generateLiveReport];
     PLCrashReport *reporter = [[PLCrashReport alloc] initWithData:data error:NULL];
     NSString *report = [PLCrashReportTextFormatter stringValueForCrashReport:reporter
                                                               withTextFormat:PLCrashReportTextFormatiOS];
+    report = [report stringByAppendingFormat:@"\n\n%@", attach];
     
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *filePath = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];;
